@@ -14,6 +14,14 @@ public class JuegoModelo {
     private int operador;
     private float respuestaCorrecta;
     
+    int puntos;  // Nuevo atributo para contar los puntos
+    int intentos;
+
+    public JuegoModelo() {
+        puntos = 0; // Inicializa los puntos en cero al inicio del juego
+        intentos = 0;
+    }
+    
     /**
      * Genera una nueva pregunta de suma aleatoria y almacena los números y la respuesta correcta.
      */
@@ -23,7 +31,7 @@ public class JuegoModelo {
         num1 = rand.nextInt(10);
         num2 = rand.nextInt(10);
         
-        operador = rand.nextInt(3);
+        operador = rand.nextInt(2);
         
         switch(operador) {
         case 0:
@@ -36,16 +44,7 @@ public class JuegoModelo {
         	break;
         case 2:
         	arit = " * ";
-        	respuestaCorrecta = num1 * num2;
-        case 3:
-        	arit = " / ";
-        	if (num2>0) {
-        		respuestaCorrecta = Math.round(num1 / num2);
-        	}else {
-        		break;
-        	}
-        	
-        	break;        	
+        	respuestaCorrecta = num1 * num2;      	
         
         }
         
@@ -59,6 +58,26 @@ public class JuegoModelo {
 
     public float getRespuestaCorrecta() {
         return respuestaCorrecta;
+    }
+    
+    public void incrementarPuntos() {
+        puntos++;
+    }
+    
+    public void descontarPuntos()
+    {
+    	puntos--;
+    }
+    public int getPuntos() {
+        return puntos;
+    }
+    
+    public void incrementarIntentos() {
+    	intentos++;
+    }
+    
+    public int getIntentos() {
+    	return intentos;
     }
     
 }

@@ -9,6 +9,8 @@ import javax.swing.SwingUtilities;
 import model.JuegoModelo;
 import view.JuegoVista;
 
+import javax.swing.Timer;
+
 /**
  * Clase que representa el controlador del juego matemático.
  * Maneja la interacción entre el modelo y la vista.
@@ -17,10 +19,14 @@ import view.JuegoVista;
 public class JuegoControlador {
 	private JuegoModelo model;
     private JuegoVista view;
+    Timer timer;
+    int tiempoRestante;
+  
 
     public JuegoControlador(JuegoModelo model, JuegoVista view) {
         this.model = model;
-        this.view = view;
+        this.view = view;       
+        
 
         view.getVerificarButton().addActionListener(new ActionListener() {
             @Override
@@ -28,6 +34,27 @@ public class JuegoControlador {
                 verificarRespuesta();
             }
         });
+        
+     // Configurar el temporizador para contar hacia abajo cada segundo
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                decrementarTiempo();
+            }
+        });
+        timer.start();
+     
+    }
+    
+    private void decrementarTiempo() {
+        tiempoRestante = view.getTiempoRestante();
+        if (tiempoRestante > 0) {
+            view.setTiempoRestante(tiempoRestante - 1);
+        } else {
+            // Si el tiempo se agota, puedes manejarlo de la manera que desees
+            JOptionPane.showMessageDialog(view.getFrame(), "¡Tiempo agotado! La respuesta correcta era " + model.getRespuestaCorrecta(), "Resultado", JOptionPane.INFORMATION_MESSAGE);
+            iniciarJuego(); // Reiniciar el juego
+        }
     }
     
     /**
@@ -37,6 +64,8 @@ public class JuegoControlador {
     public void iniciarJuego() {
         model.generarPregunta();
         actualizarVista();
+        view.reiniciarTiempo();        
+        
     }
     
     /**
@@ -46,11 +75,17 @@ public class JuegoControlador {
     public void verificarRespuesta() {
         try {
             int respuestaUsuario = Integer.parseInt(view.getRespuestaField().getText());
+            model.incrementarIntentos();
             if (respuestaUsuario == model.getRespuestaCorrecta()) {
-                JOptionPane.showMessageDialog(view.getFrame(), "¡Correcto! Buena respuesta.", "Resultado", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(view.getFrame(), "¡Correcto! Buena respuesta. \n\nIntento: " + model.getIntentos(), "Resultado", JOptionPane.INFORMATION_MESSAGE);
+                model.incrementarPuntos();
+                view.actualizarPuntos(model.getPuntos());
             } else {
-                JOptionPane.showMessageDialog(view.getFrame(), "Incorrecto. La respuesta correcta es " + model.getRespuestaCorrecta(), "Resultado", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(view.getFrame(), "Incorrecto. La respuesta correcta es " + model.getRespuestaCorrecta() + "\n\nIntento: " + model.getIntentos(), "Resultado", JOptionPane.ERROR_MESSAGE);
+                model.descontarPuntos();
+                view.actualizarPuntos(model.getPuntos());
             }
+   
             iniciarJuego();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(view.getFrame(), "Ingresa un número válido.", "Error", JOptionPane.ERROR_MESSAGE);

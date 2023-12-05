@@ -12,11 +12,16 @@ public class JuegoVista {
     private JLabel preguntaLabel;
     private JTextField respuestaField;
     private JButton verificarButton;
+    
+    private JLabel tiempoLabel;
+    private int tiempoRestante;
+    private JLabel puntosLabel;
+
 
     public JuegoVista() {
         frame = new JFrame("Juego Matemático");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 150);
+        frame.setSize(300, 200);
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
         preguntaLabel = new JLabel();
@@ -26,6 +31,16 @@ public class JuegoVista {
         frame.add(preguntaLabel);
         frame.add(respuestaField);
         frame.add(verificarButton);
+        
+        tiempoLabel = new JLabel("Tiempo restante: ");
+        frame.add(tiempoLabel);
+
+        tiempoRestante = 15; // Inicializa el tiempo en segundos
+        actualizarTiempo();
+        
+        puntosLabel = new JLabel("Puntos: 0");
+        frame.add(puntosLabel);
+        
     }
     
     /**
@@ -67,4 +82,27 @@ public class JuegoVista {
     public JButton getVerificarButton() {
         return verificarButton;
     }
+    
+    public void actualizarTiempo() {
+        tiempoLabel.setText("Tiempo restante: " + tiempoRestante + " segundos");
+    }
+
+    public int getTiempoRestante() {
+        return tiempoRestante;
+    }
+
+    public void setTiempoRestante(int tiempoRestante) {
+        this.tiempoRestante = tiempoRestante;
+        actualizarTiempo();
+    }
+    
+    public void reiniciarTiempo() {
+    	tiempoRestante = 16;
+    }
+    
+    public void actualizarPuntos(int puntos) {
+        puntosLabel.setText("Puntos: " + puntos);
+    }
+    
+
 }

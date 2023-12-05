@@ -13,6 +13,7 @@ public class JuegoControladorTest {
 	private JuegoModelo modelo;
     private JuegoVista vista;
     private JuegoControlador controlador;
+   
 
     @Before
     public void setUp() {
