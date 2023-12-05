@@ -51,8 +51,9 @@ public class JuegoControlador {
         if (tiempoRestante > 0) {
             view.setTiempoRestante(tiempoRestante - 1);
         } else {
+        	model.incrementarIntentos();
             // Si el tiempo se agota, puedes manejarlo de la manera que desees
-            JOptionPane.showMessageDialog(view.getFrame(), "¡Tiempo agotado! La respuesta correcta era " + model.getRespuestaCorrecta(), "Resultado", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(view.getFrame(), "¡Tiempo agotado! La respuesta correcta era " + model.getRespuestaCorrecta() + "\n\nIntento: " + model.getIntentos(), "Resultado", JOptionPane.INFORMATION_MESSAGE);
             iniciarJuego(); // Reiniciar el juego
         }
     }
